@@ -1,0 +1,124 @@
+/* ============================================
+   ACCORDION STYLES
+   ============================================ */
+
+.accordion-item {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.dark-mode .accordion-item {
+  background: #2d3250;
+}
+
+.accordion-item:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.accordion-header:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.accordion-header h3 {
+  font-size: 1.4rem;
+  color: #667eea;
+}
+
+.dark-mode .accordion-header h3 {
+  color: #8b9bff;
+}
+
+.accordion-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+  color: #667eea;
+}
+
+.accordion-icon.open {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  padding: 0 30px 30px 30px;
+  animation: slideDown 0.3s ease;
+}
+
+.trick-explanation,
+.trick-steps,
+.trick-example {
+  margin-bottom: 25px;
+}
+
+.trick-explanation h4,
+.trick-steps h4,
+.trick-example h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.dark-mode .trick-explanation h4,
+.dark-mode .trick-steps h4,
+.dark-mode .trick-example h4 {
+  color: #f0f0f0;
+}
+
+.trick-explanation p,
+.trick-steps ol {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #555;
+}
+
+.dark-mode .trick-explanation p,
+.dark-mode .trick-steps ol {
+  color: #c0c0c0;
+}
+
+.trick-steps ol {
+  padding-left: 25px;
+}
+
+.trick-steps li {
+  margin-bottom: 10px;
+}
+
+.example-text {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  border-left: 4px solid #667eea;
+}
+
+.dark-mode .example-text {
+  background: #1a1d2e;
+  color: #8b9bff;
+  border-left: 4px solid #8b9bff;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
