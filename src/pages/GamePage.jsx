@@ -51,7 +51,7 @@ const GamePage = () => {
     return moves;
   };
 
-  // Computer's move logic - FIXED VERSION
+  // Computer's move logic
   const computerMove = (playerNumber) => {
     setIsPlayerTurn(false);
     
