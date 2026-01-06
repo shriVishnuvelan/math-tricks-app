@@ -334,7 +334,6 @@ const GamePage = () => {
                   <li>...game continues until someone reaches 100!</li>
                 </ul>
               </li>
-              <li>🧠 <strong>Pro Strategy:</strong> Try to land on these key numbers: <strong>1, 12, 23, 34, 45, 56, 67, 78, 89</strong> to guarantee a win!</li>
               <li>😊 <strong>Easy Mode:</strong> Computer makes random moves</li>
               <li>😐 <strong>Medium Mode:</strong> Computer plays smart 70% of the time</li>
               <li>😈 <strong>Hard Mode:</strong> Computer uses optimal strategy (very challenging!)</li>
