@@ -15,7 +15,7 @@
 ## 📸 Preview
 
 <div align="center">
-  <img src="screenshots/home.png" alt="Home Page" width="800"/>
+  <img src="src/screenshots/home.png" alt="Home Page" width="800"/>
   <p><em>Clean, modern interface with three main categories</em></p>
 </div>
 
