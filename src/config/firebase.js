@@ -2,15 +2,14 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
-// Replace with your Firebase config
+// firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyDT5Mq_oulhM8X9UEauFqJF_8MW2skG6fg",
-  authDomain: "math-tricks-app.firebaseapp.com",
-  projectId: "math-tricks-app",
-  storageBucket: "math-tricks-app.firebasestorage.app",
-  messagingSenderId: "311103707924",
-  appId: "1:311103707924:web:0224133f9a03224ed78001",
-  //measurementId: "G-3CT0J77L6S"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
