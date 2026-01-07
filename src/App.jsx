@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/NavBar';
 import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
@@ -10,10 +10,11 @@ import ProfilePage from './pages/ProfilePage';
 import tricksData from './data/tricksData';
 import './App.css';
 
-function App() {
-  const [currentPage, setCurrentPage] = useState('login');
+function AppContent() {
+  const [currentPage, setCurrentPage] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -26,6 +27,28 @@ function App() {
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
     document.body.className = isDarkMode ? 'dark-mode' : 'light-mode';
   }, [isDarkMode]);
+
+  useEffect(() => {
+    const savedPage = sessionStorage.getItem('currentPage');
+    const savedCategory = sessionStorage.getItem('selectedCategory');
+    
+    if (savedPage) {
+      setCurrentPage(savedPage);
+    }
+    
+    if (savedCategory) {
+      setSelectedCategory(savedCategory);
+    }
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem('currentPage', currentPage);
+    if (selectedCategory) {
+      sessionStorage.setItem('selectedCategory', selectedCategory);
+    } else {
+      sessionStorage.removeItem('selectedCategory');
+    }
+  }, [currentPage, selectedCategory]);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -49,6 +72,10 @@ function App() {
   };
 
   const renderPage = () => {
+    if (!currentUser && currentPage === 'profile') {
+      return <LoginPage onNavigate={handleNavigate} />;
+    }
+
     switch (currentPage) {
       case 'login':
         return <LoginPage onNavigate={handleNavigate} />;
@@ -74,20 +101,26 @@ function App() {
   };
 
   return (
-    <AuthProvider>
-      <div className="app">
-        {currentPage !== 'login' && (
-          <Navbar
-            isDark={isDarkMode}
-            onThemeToggle={handleThemeToggle}
-            onNavigate={handleNavigate}
-            currentPage={currentPage}
-          />
-        )}
-        <div className="page-content">
-          {renderPage()}
-        </div>
+    <div className="app">
+      {currentPage !== 'login' && (
+        <Navbar
+          isDark={isDarkMode}
+          onThemeToggle={handleThemeToggle}
+          onNavigate={handleNavigate}
+          currentPage={currentPage}
+        />
+      )}
+      <div className="page-content">
+        {renderPage()}
       </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
     </AuthProvider>
   );
 }

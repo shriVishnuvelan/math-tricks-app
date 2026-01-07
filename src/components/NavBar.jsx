@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import './NavBar.css';
 
 const Navbar = ({ isDark, onThemeToggle, onNavigate, currentPage }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSettingsExpanded, setIsSettingsExpanded] = useState(false);
   const sidebarRef = useRef(null);
+  const { currentUser } = useAuth();
 
   const socialLinks = {
     linkedin: 'https://www.linkedin.com/in/shri-vishnu-velan-a-k-72507b2b0',
@@ -99,6 +101,24 @@ const Navbar = ({ isDark, onThemeToggle, onNavigate, currentPage }) => {
         </div>
 
         <div className="sidebar-content">
+          {currentUser && (
+            <div className="user-info-sidebar">
+              <div className="user-avatar-small">
+                {currentUser.photoURL ? (
+                  <img src={currentUser.photoURL} alt="Profile" />
+                ) : (
+                  <div className="avatar-placeholder-small">
+                    {currentUser.displayName?.[0]?.toUpperCase() || 'U'}
+                  </div>
+                )}
+              </div>
+              <div className="user-details-sidebar">
+                <div className="user-name-sidebar">{currentUser.displayName || 'User'}</div>
+                <div className="user-email-sidebar">{currentUser.email}</div>
+              </div>
+            </div>
+          )}
+
           <nav className="sidebar-nav">
             <button
               className={`nav-item ${currentPage === 'home' ? 'active' : ''}`}
@@ -118,14 +138,25 @@ const Navbar = ({ isDark, onThemeToggle, onNavigate, currentPage }) => {
               {currentPage === 'game' && <span className="active-indicator">●</span>}
             </button>
 
-            <button
-              className={`nav-item ${currentPage === 'profile' ? 'active' : ''}`}
-              onClick={() => handleNavigation('profile')}
-            >
-              <span className="nav-icon">👤</span>
-              <span className="nav-text">Profile</span>
-              {currentPage === 'profile' && <span className="active-indicator">●</span>}
-            </button>
+            {currentUser ? (
+              <button
+                className={`nav-item ${currentPage === 'profile' ? 'active' : ''}`}
+                onClick={() => handleNavigation('profile')}
+              >
+                <span className="nav-icon">👤</span>
+                <span className="nav-text">Profile</span>
+                {currentPage === 'profile' && <span className="active-indicator">●</span>}
+              </button>
+            ) : (
+              <button
+                className={`nav-item ${currentPage === 'login' ? 'active' : ''}`}
+                onClick={() => handleNavigation('login')}
+              >
+                <span className="nav-icon">🔐</span>
+                <span className="nav-text">Login</span>
+                {currentPage === 'login' && <span className="active-indicator">●</span>}
+              </button>
+            )}
 
             <button
               className={`nav-item ${currentPage === 'about' ? 'active' : ''}`}

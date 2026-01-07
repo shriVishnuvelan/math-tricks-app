@@ -3,6 +3,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/324e137b-0eac-4fcd-afac-5c1aa604dea0/deploy-status)](https://app.netlify.com/projects/math-tricks-app-v/deploys)
 [![React](https://img.shields.io/badge/React-18.0-blue?logo=react)](https://reactjs.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?logo=javascript)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Firebase](https://img.shields.io/badge/Firebase-Authentication-orange?logo=firebase)](https://firebase.google.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Live Demo](https://img.shields.io/badge/Demo-Live-success?logo=netlify)](https://math-tricks-app-v.netlify.app/)
 
@@ -58,6 +59,15 @@
 - **Pure CSS3** - No external UI libraries
 - **Zero dependencies** for styling
 
+### 🔐 **User Authentication**
+- **Secure Sign Up/Login:** Create accounts using Email/Password.
+- **Google Sign-In:** One-click login using OAuth.
+- **Profile Management:** Personalized user dashboard.
+
+### ☁️ **Cloud Database**
+- **Real-time Sync:** High scores and game data are saved instantly to Cloud Firestore.
+- **Persistent Data:** Access your stats from any device.
+
 ---
 
 ## 🚀 Tech Stack
@@ -67,6 +77,11 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
+
+### **Backend & Services**
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
+![Firestore](https://img.shields.io/badge/Cloud_Firestore-FFCA28?style=flat-square&logo=firebase&logoColor=black)
+![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=flat-square&logo=google-cloud&logoColor=white)
 
 ### **Tools & Deployment**
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
@@ -93,6 +108,12 @@ math-tricks-app/
 │   │   ├── SearchBar.jsx           # Advanced search component
 │   │   └── SearchBar.css
 │   │
+│   ├── config/
+│   │   └── firebase.js
+│   │
+│   ├── context/
+│   │   └── AuthContext.js
+│   │
 │   ├── pages/
 │   │   ├── HomePage.jsx            # Landing page
 │   │   ├── HomePage.css
@@ -101,15 +122,24 @@ math-tricks-app/
 │   │   ├── AboutPage.jsx           # About & info page
 │   │   ├── AboutPage.css
 │   │   ├── GamePage.jsx            # Race to 100 game
-│   │   └── GamePage.css
+│   │   ├── GamePage.css
+│   │   ├── LoginPage.jsx
+│   │   ├── LoginPage.css
+│   │   ├── ProfilePage.jsx
+│   │   └── ProfilePage.css
+│   │
+│   ├── screenshots/
+│   │   └── home.png 
 │   │
 │   ├── data/
 │   │   └── tricksData.js           # All math tricks data
 │   │
+│
 │   ├── App.jsx                     # Main app component
 │   ├── App.css                     # Global styles
 │   └── index.js                    # Entry point
-│
+│   
+├── LICENSE
 ├── package.json
 ├── README.md
 └── .gitignore
@@ -219,7 +249,8 @@ useEffect(() => {
 - **Modern UI/UX:** Clean, intuitive interface with smooth transitions
 - **Accessibility:** Semantic HTML and keyboard navigation support
 - **Performance:** Optimized rendering with React best practices
-- **No External Libraries:** Pure React and CSS for faster load times
+- **Secure Sign Up/Login:** Create accounts using Email/Password
+- **Profile Management:** Personalized user dashboard
 
 ---
 
@@ -231,6 +262,8 @@ useEffect(() => {
 - **Code Quality:** Zero ESLint warnings, production-ready
 - **Bundle Size:** Optimized for fast loading
 - **Browser Support:** Chrome, Firefox, Safari, Edge
+- **Backend:** Firebase Auth & Firestore
+- **Deployment:** Netlify
 
 ---
 
@@ -241,30 +274,23 @@ useEffect(() => {
 - Practice with interactive game
 - Study step-by-step examples
 
-### **For Teachers**
-- Teaching resource for math classes
-- Demonstrate quick calculation methods
-- Engage students with interactive content
-
 ### **For Professionals**
 - Quick reference for mental calculations
 - Impress in meetings and interviews
 - Improve numerical agility
 
-
-
-
-
+### **For Developers**
+- Example of React + Firebase integration
+- Reference for Authentication flows
+- Modern UI implementation
 
 ---
 
 ## 📝 Future Enhancements
 
-- [ ] User accounts and progress tracking
 - [ ] More game modes (Countdown, Time Attack)
 - [ ] Printable trick cards
 - [ ] Video tutorials for each trick
-- [ ] Mobile app (React Native)
 - [ ] Quiz mode with scoring
 - [ ] Social sharing features
 - [ ] Dark mode improvements
@@ -318,8 +344,8 @@ For questions or suggestions:
 ![Maintenance](https://img.shields.io/badge/Maintained-Yes-green.svg)
 ![Last Commit](https://img.shields.io/github/last-commit/shriVishnuvelan/math-tricks-app)
 
-**Current Version:** 1.0.0  
-**Last Updated:** January 2025  
+**Current Version:** 1.1.0  
+**Last Updated:** January 2026  
 **Status:** Production Ready ✅
 
 ---

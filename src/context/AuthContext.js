@@ -6,7 +6,9 @@ import {
   onAuthStateChanged,
   signInWithPopup,
   updateProfile,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
 import { auth, googleProvider, db } from '../config/firebase';
@@ -22,7 +24,20 @@ export function AuthProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const setupPersistence = async () => {
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+      } catch (error) {
+        console.error('Error setting persistence:', error);
+      }
+    };
+    
+    setupPersistence();
+  }, []);
+
   async function signup(email, password, displayName) {
+    await setPersistence(auth, browserLocalPersistence);
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     
     await updateProfile(userCredential.user, { displayName });
@@ -45,11 +60,13 @@ export function AuthProvider({ children }) {
     return userCredential.user;
   }
 
-  function login(email, password) {
+  async function login(email, password) {
+    await setPersistence(auth, browserLocalPersistence);
     return signInWithEmailAndPassword(auth, email, password);
   }
 
   async function loginWithGoogle() {
+    await setPersistence(auth, browserLocalPersistence);
     const result = await signInWithPopup(auth, googleProvider);
     
     const userDoc = await getDoc(doc(db, 'users', result.user.uid));
@@ -76,6 +93,7 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    sessionStorage.clear();
     return signOut(auth);
   }
 
@@ -84,77 +102,89 @@ export function AuthProvider({ children }) {
   }
 
   async function loadUserProfile(uid) {
-    const userDoc = await getDoc(doc(db, 'users', uid));
-    if (userDoc.exists()) {
-      setUserProfile(userDoc.data());
+    try {
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      if (userDoc.exists()) {
+        setUserProfile(userDoc.data());
+      }
+    } catch (error) {
+      console.error('Error loading user profile:', error);
     }
   }
 
   async function markTrickViewed(trickId, category) {
     if (!currentUser) return;
     
-    const userRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userRef);
-    
-    if (userDoc.exists()) {
-      const currentProgress = userDoc.data().progress;
-      const tricksViewed = currentProgress.tricksViewed || [];
+    try {
+      const userRef = doc(db, 'users', currentUser.uid);
+      const userDoc = await getDoc(userRef);
       
-      if (!tricksViewed.includes(trickId)) {
-        tricksViewed.push(trickId);
+      if (userDoc.exists()) {
+        const currentProgress = userDoc.data().progress;
+        const tricksViewed = currentProgress.tricksViewed || [];
         
-        await updateDoc(userRef, {
-          'progress.tricksViewed': tricksViewed
-        });
-        
-        setUserProfile(prev => ({
-          ...prev,
-          progress: {
-            ...prev.progress,
-            tricksViewed
-          }
-        }));
+        if (!tricksViewed.includes(trickId)) {
+          tricksViewed.push(trickId);
+          
+          await updateDoc(userRef, {
+            'progress.tricksViewed': tricksViewed
+          });
+          
+          setUserProfile(prev => ({
+            ...prev,
+            progress: {
+              ...prev.progress,
+              tricksViewed
+            }
+          }));
+        }
       }
+    } catch (error) {
+      console.error('Error marking trick as viewed:', error);
     }
   }
 
   async function updateGameScore(won, score, difficulty) {
     if (!currentUser) return;
     
-    const userRef = doc(db, 'users', currentUser.uid);
-    const userDoc = await getDoc(userRef);
-    
-    if (userDoc.exists()) {
-      const currentProgress = userDoc.data().progress;
-      const gameScores = currentProgress.gameScores || [];
+    try {
+      const userRef = doc(db, 'users', currentUser.uid);
+      const userDoc = await getDoc(userRef);
       
-      gameScores.push({
-        score,
-        won,
-        difficulty,
-        date: new Date().toISOString()
-      });
-      
-      const wins = won ? (currentProgress.wins || 0) + 1 : currentProgress.wins || 0;
-      const losses = !won ? (currentProgress.losses || 0) + 1 : currentProgress.losses || 0;
-      
-      await updateDoc(userRef, {
-        'progress.gameScores': gameScores,
-        'progress.totalGamesPlayed': (currentProgress.totalGamesPlayed || 0) + 1,
-        'progress.wins': wins,
-        'progress.losses': losses
-      });
-      
-      setUserProfile(prev => ({
-        ...prev,
-        progress: {
-          ...prev.progress,
-          gameScores,
-          totalGamesPlayed: (currentProgress.totalGamesPlayed || 0) + 1,
-          wins,
-          losses
-        }
-      }));
+      if (userDoc.exists()) {
+        const currentProgress = userDoc.data().progress;
+        const gameScores = currentProgress.gameScores || [];
+        
+        gameScores.push({
+          score,
+          won,
+          difficulty,
+          date: new Date().toISOString()
+        });
+        
+        const wins = won ? (currentProgress.wins || 0) + 1 : currentProgress.wins || 0;
+        const losses = !won ? (currentProgress.losses || 0) + 1 : currentProgress.losses || 0;
+        
+        await updateDoc(userRef, {
+          'progress.gameScores': gameScores,
+          'progress.totalGamesPlayed': (currentProgress.totalGamesPlayed || 0) + 1,
+          'progress.wins': wins,
+          'progress.losses': losses
+        });
+        
+        setUserProfile(prev => ({
+          ...prev,
+          progress: {
+            ...prev.progress,
+            gameScores,
+            totalGamesPlayed: (currentProgress.totalGamesPlayed || 0) + 1,
+            wins,
+            losses
+          }
+        }));
+      }
+    } catch (error) {
+      console.error('Error updating game score:', error);
     }
   }
 

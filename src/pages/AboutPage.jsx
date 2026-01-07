@@ -7,10 +7,8 @@ import './AboutPage.css';
 // ============================================
 
 const AboutPage = () => {
-  // Replace these with your actual links
   const socialLinks = {
-    portfolio: 'https://yourportfolio.com', // Replace with your portfolio URL
-    github: 'https://github.com/shriVishnuvelan', // Replace with your GitHub username
+    github: 'https://github.com/shriVishnuvelan',
     linkedin: 'https://www.linkedin.com/in/shri-vishnu-velan-a-k-72507b2b0/'
   };
 
@@ -26,7 +24,7 @@ const AboutPage = () => {
         <header className="about-header">
           <div className="about-icon">📐</div>
           <h1 className="about-title">About Mathematics Tricks</h1>
-          <p className="about-tagline">Your Ultimate Mental Math Companion</p>
+          <p className="about-tagline">Learn faster • Think smarter • Calculate instantly</p>
         </header>
 
         {/* Main Content */}
@@ -34,12 +32,12 @@ const AboutPage = () => {
           {/* What is this app */}
           <section className="about-section">
             <div className="section-icon">💡</div>
-            <h2 className="section-title">What is this App?</h2>
+            <h2 className="section-title">What is this Application?</h2>
             <p className="section-text">
-              Mathematics Tricks is an interactive web application designed to help students, 
-              professionals, and math enthusiasts master mental math calculations. We provide 
-              quick shortcuts and techniques for multiplication, squaring, and division that 
-              make complex calculations simple and fast.
+              Mathematics Tricks is a modern, interactive web application designed to help
+              students, professionals, and learners improve their mental math skills using
+              proven shortcuts and techniques. The platform combines educational content
+              with authentication-based access for a personalized experience.
             </p>
           </section>
 
@@ -82,6 +80,18 @@ const AboutPage = () => {
                 <span className="feature-icon">💾</span>
                 <div>
                   <strong>Save Preferences:</strong> Your theme choice is saved automatically
+                </div>
+              </li>
+              <li>
+                <span className="feature-icon">🔐</span>
+                <div>
+                  <strong>Authentication:</strong> Secure authentication using Firebase
+                </div>
+              </li>
+              <li>
+                <span className="feature-icon">📧</span>
+                <div>
+                  <strong>Login:</strong> Email & Google login support
                 </div>
               </li>
             </ul>
@@ -128,7 +138,16 @@ const AboutPage = () => {
                 <span className="tech-badge">React Hooks</span>
               </div>
               <div className="tech-item">
-                <span className="tech-badge">localStorage API</span>
+                <span className="tech-badge">GitHub</span>
+              </div>
+              <div className="tech-item">
+                <span className="tech-badge">Firebase Authentication</span>
+              </div>
+              <div className="tech-item">
+                <span className="tech-badge">Google OAuth</span>
+              </div>
+              <div className="tech-item">
+                <span className="tech-badge">Netlify</span>
               </div>
             </div>
           </section>
@@ -172,8 +191,8 @@ const AboutPage = () => {
 
         {/* Footer */}
         <footer className="about-footer">
-          <p>© 2024 Mathematics Tricks App | Built with ❤️ using React</p>
-          <p className="version">Version 1.0.0</p>
+          <p>© 2026 Mathematics Tricks App | Built with ❤️ using React & Firebase</p>
+          <p className="version">Version 1.1.0</p>
         </footer>
       </div>
     </div>
