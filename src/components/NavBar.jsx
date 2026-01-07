@@ -80,121 +80,131 @@ const Navbar = ({ isDark, onThemeToggle, onNavigate, currentPage }) => {
             {currentPage === 'about' && 'ℹ️'}
             {currentPage === 'category' && '📚'}
             {currentPage === 'game' && '🎮'}
+            {currentPage === 'profile' && '👤'}
           </div>
         </div>
       </nav>
 
       {isMenuOpen && <div className="overlay" onClick={toggleMenu}></div>}
 
-      <aside className={`sidebar ${isMenuOpen ? 'open ' : ''}`} ref={sidebarRef}>
-       <div className="sidebar-header">
-         <div className="sidebar-brand">
-           <span className="sidebar-icon">📐</span>
-           < span className="sidebar-title">Math Tricks</span>
-         </div>
-
-         <button className="close-btn" onClick={toggleMenu}>
-         ✕
-         </button>
-       </div>
-
-       <div className="sidebar-content">
-       <nav className="sidebar-nav">
-         <button
-          className={`nav-item ${currentPage === 'home' ? 'active' : ''}`}
-          onClick={() => handleNavigation('home')}>
-          <span className="nav-icon">🏠</span>
-          <span className="nav-text">Home</span>
-          {currentPage === 'home' && <span className="active-indicator">●</span>}
-         </button>
-
-          {/* ✨ NEW: Game Link */}
-          <button
-            className={`nav-item ${currentPage === 'game' ? 'active' : ''}`}
-            onClick={() => handleNavigation('game')}
-          >
-            <span className="nav-icon">🎮</span>
-            <span className="nav-text">Math Game</span>
-            {currentPage === 'game' && <span className="active-indicator">●</span>}
+      <aside className={`sidebar ${isMenuOpen ? 'open' : ''}`} ref={sidebarRef}>
+        <div className="sidebar-header">
+          <div className="sidebar-brand">
+            <span className="sidebar-icon">📐</span>
+            <span className="sidebar-title">Math Tricks</span>
+          </div>
+          <button className="close-btn" onClick={toggleMenu}>
+            ✕
           </button>
+        </div>
 
-          <button
-            className={`nav-item ${currentPage === 'about' ? 'active' : ''}`}
-            onClick={() => handleNavigation('about')}
-          >
-            <span className="nav-icon">ℹ️</span>
-            <span className="nav-text">About</span>
-            {currentPage === 'about' && <span className="active-indicator">●</span>}
-          </button>
-
-          <div className="nav-section">
+        <div className="sidebar-content">
+          <nav className="sidebar-nav">
             <button
-              className={`nav-item settings-item ${isSettingsExpanded ? 'expanded' : ''}`}
-              onClick={toggleSettings}
+              className={`nav-item ${currentPage === 'home' ? 'active' : ''}`}
+              onClick={() => handleNavigation('home')}
             >
-              <span className="nav-icon">⚙️</span>
-              <span className="nav-text">Settings</span>
-              <span className={`expand-arrow ${isSettingsExpanded ? 'open' : ''}`}>
-                ▼
-              </span>
+              <span className="nav-icon">🏠</span>
+              <span className="nav-text">Home</span>
+              {currentPage === 'home' && <span className="active-indicator">●</span>}
             </button>
 
-            {isSettingsExpanded && (
-              <div className="submenu">
-                <div className="submenu-item theme-item">
-                  <div className="theme-info">
-                    <span className="submenu-icon">{isDark ? '☀️' : '🌙'}</span>
+            <button
+              className={`nav-item ${currentPage === 'game' ? 'active' : ''}`}
+              onClick={() => handleNavigation('game')}
+            >
+              <span className="nav-icon">🎮</span>
+              <span className="nav-text">Math Game</span>
+              {currentPage === 'game' && <span className="active-indicator">●</span>}
+            </button>
+
+            <button
+              className={`nav-item ${currentPage === 'profile' ? 'active' : ''}`}
+              onClick={() => handleNavigation('profile')}
+            >
+              <span className="nav-icon">👤</span>
+              <span className="nav-text">Profile</span>
+              {currentPage === 'profile' && <span className="active-indicator">●</span>}
+            </button>
+
+            <button
+              className={`nav-item ${currentPage === 'about' ? 'active' : ''}`}
+              onClick={() => handleNavigation('about')}
+            >
+              <span className="nav-icon">ℹ️</span>
+              <span className="nav-text">About</span>
+              {currentPage === 'about' && <span className="active-indicator">●</span>}
+            </button>
+
+            <div className="nav-section">
+              <button
+                className={`nav-item settings-item ${isSettingsExpanded ? 'expanded' : ''}`}
+                onClick={toggleSettings}
+              >
+                <span className="nav-icon">⚙️</span>
+                <span className="nav-text">Settings</span>
+                <span className={`expand-arrow ${isSettingsExpanded ? 'open' : ''}`}>
+                  ▼
+                </span>
+              </button>
+
+              {isSettingsExpanded && (
+                <div className="submenu">
+                  <div className="submenu-item theme-item">
+                    <div className="theme-info">
+                      <span className="submenu-icon">{isDark ? '☀️' : '🌙'}</span>
+                      <span className="submenu-text">
+                        {isDark ? 'Light Mode' : 'Dark Mode'}
+                      </span>
+                    </div>
+                    <label className="toggle-switch">
+                      <input
+                        type="checkbox"
+                        checked={isDark}
+                        onChange={handleThemeToggle}
+                      />
+                      <span className="toggle-slider"></span>
+                    </label>
+                  </div>
+
+                  <div className="submenu-divider"></div>
+
+                  <div className="submenu-item info-item">
+                    <span className="submenu-icon">🎨</span>
                     <span className="submenu-text">
-                      {isDark ? 'Light Mode' : 'Dark Mode'}
+                      Current: {isDark ? 'Dark' : 'Light'}
                     </span>
                   </div>
-                  <label className="toggle-switch">
-                    <input
-                      type="checkbox"
-                      checked={isDark}
-                      onChange={handleThemeToggle}
-                    />
-                    <span className="toggle-slider"></span>
-                  </label>
                 </div>
+              )}
+            </div>
+          </nav>
 
-                <div className="submenu-divider"></div>
-
-                <div className="submenu-item info-item">
-                  <span className="submenu-icon">🎨</span>
-                  <span className="submenu-text">
-                    Current: {isDark ? 'Dark' : 'Light'}
-                  </span>
-                </div>
-              </div>
-            )}
+          <div className="sidebar-footer">
+            <div className="footer-title">Connect with Me</div>
+            <div className="social-links">
+              <button
+                className="social-link"
+                onClick={() => handleSocialLink(socialLinks.linkedin)}
+              >
+                <span className="social-icon">💼</span>
+                <span className="social-text">LinkedIn</span>
+                <span className="external-icon">↗</span>
+              </button>
+              <button
+                className="social-link"
+                onClick={() => handleSocialLink(socialLinks.github)}
+              >
+                <span className="social-icon">🐙</span>
+                <span className="social-text">GitHub</span>
+                <span className="external-icon">↗</span>
+              </button>
+            </div>
           </div>
-        </nav>
-
-        <div className="sidebar-footer">
-          <div className="footer-title">Connect with Me</div>
-          <div className="social-links">
-            <button
-              className="social-link"
-              onClick={() => handleSocialLink(socialLinks.linkedin)}
-            >
-              <span className="social-icon">💼</span>
-              <span className="social-text">LinkedIn</span>
-              <span className="external-icon">↗</span>
-            </button>
-            <button
-              className="social-link"
-              onClick={() => handleSocialLink(socialLinks.github)}
-            >
-              <span className="social-icon">🐙</span>
-              <span className="social-text">GitHub</span>
-              <span className="external-icon">↗</span>
-            </button>
-          </div>
-        </div>
         </div>
       </aside>
     </>
   );
 };
+
 export default Navbar;

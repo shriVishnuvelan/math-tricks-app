@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/NavBar';
 import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
 import AboutPage from './pages/AboutPage';
 import GamePage from './pages/GamePage';
+import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
 import tricksData from './data/tricksData';
 import './App.css';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState('login');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -47,6 +50,8 @@ function App() {
 
   const renderPage = () => {
     switch (currentPage) {
+      case 'login':
+        return <LoginPage onNavigate={handleNavigate} />;
       case 'home':
         return <HomePage onCategorySelect={handleCategorySelect} />;
       case 'category':
@@ -61,23 +66,29 @@ function App() {
         return <AboutPage />;
       case 'game':
         return <GamePage />;
+      case 'profile':
+        return <ProfilePage onNavigate={handleNavigate} />;
       default:
         return <HomePage onCategorySelect={handleCategorySelect} />;
     }
   };
 
   return (
-    <div className="app">
-      <Navbar
-        isDark={isDarkMode}
-        onThemeToggle={handleThemeToggle}
-        onNavigate={handleNavigate}
-        currentPage={currentPage}
-      />
-      <div className="page-content">
-        {renderPage()}
+    <AuthProvider>
+      <div className="app">
+        {currentPage !== 'login' && (
+          <Navbar
+            isDark={isDarkMode}
+            onThemeToggle={handleThemeToggle}
+            onNavigate={handleNavigate}
+            currentPage={currentPage}
+          />
+        )}
+        <div className="page-content">
+          {renderPage()}
+        </div>
       </div>
-    </div>
+    </AuthProvider>
   );
 }
 

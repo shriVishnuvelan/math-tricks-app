@@ -1,13 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../context/AuthContext';
 import './GamePage.css';
 
-// ============================================
-// PAGE: GamePage
-// Race to 100 Game - Player vs Computer
-// ============================================
-
 const GamePage = () => {
-  // Game state
   const [currentNumber, setCurrentNumber] = useState(0);
   const [gameStatus, setGameStatus] = useState('ready');
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
@@ -17,17 +12,15 @@ const GamePage = () => {
   const [difficulty, setDifficulty] = useState('medium');
   const [showRules, setShowRules] = useState(false);
 
-  // Ref for auto-scroll
+  const { updateGameScore } = useAuth();
   const historyRef = useRef(null);
 
-  // Auto-scroll to bottom when history updates
   useEffect(() => {
     if (historyRef.current) {
       historyRef.current.scrollTop = historyRef.current.scrollHeight;
     }
   }, [gameHistory]);
 
-  // Start new game
   const startGame = () => {
     setCurrentNumber(0);
     setGameStatus('playing');
@@ -39,7 +32,6 @@ const GamePage = () => {
     }]);
   };
 
-  // Calculate possible moves based on current number
   const getPossibleMoves = (fromNumber) => {
     const moves = [];
     for (let i = 1; i <= 10; i++) {
@@ -51,7 +43,6 @@ const GamePage = () => {
     return moves;
   };
 
-  // Computer's move logic
   const computerMove = (playerNumber) => {
     setIsPlayerTurn(false);
     
@@ -60,9 +51,7 @@ const GamePage = () => {
       const minNum = playerNumber + 1;
       const maxNum = Math.min(playerNumber + 10, 100);
 
-      // AI Strategy based on difficulty
       if (difficulty === 'hard') {
-        // Hard: Computer uses optimal strategy (multiples of 11)
         const optimalMoves = [1, 12, 23, 34, 45, 56, 67, 78, 89, 100];
         const nextOptimal = optimalMoves.find(num => num >= minNum && num <= maxNum);
         
@@ -72,7 +61,6 @@ const GamePage = () => {
           nextNumber = maxNum;
         }
       } else if (difficulty === 'medium') {
-        // Medium: 70% chance of good move, 30% random
         if (Math.random() < 0.7) {
           const target = Math.floor(playerNumber / 11) * 11 + 11;
           if (target >= minNum && target <= maxNum) {
@@ -86,7 +74,6 @@ const GamePage = () => {
           if (nextNumber > maxNum) nextNumber = maxNum;
         }
       } else {
-        // Easy: Random move
         const increment = Math.floor(Math.random() * 10) + 1;
         nextNumber = playerNumber + increment;
         if (nextNumber > 100) nextNumber = 100;
@@ -102,7 +89,6 @@ const GamePage = () => {
         message: `Computer chose ${nextNumber} (added ${addedAmount})`
       }]);
 
-      // Check if computer won
       if (nextNumber === 100) {
         setGameStatus('computerWon');
         setComputerScore(prev => prev + 1);
@@ -111,13 +97,13 @@ const GamePage = () => {
           number: 100,
           message: '🏆 Computer wins! Computer reached 100 first!'
         }]);
+        updateGameScore(false, nextNumber, difficulty);
       } else {
         setIsPlayerTurn(true);
       }
     }, 1500);
   };
 
-  // Handle player's move
   const handlePlayerMove = (number) => {
     if (!isPlayerTurn || gameStatus !== 'playing') return;
 
@@ -130,7 +116,6 @@ const GamePage = () => {
       message: `You chose ${number} (added ${addedAmount})`
     }]);
 
-    // Check if player won
     if (number === 100) {
       setGameStatus('playerWon');
       setPlayerScore(prev => prev + 1);
@@ -139,13 +124,12 @@ const GamePage = () => {
         number: 100,
         message: '🎉 You win! You reached 100 first!'
       }]);
+      updateGameScore(true, 100, difficulty);
     } else {
-      // Pass the player's number directly to computer
       computerMove(number);
     }
   };
 
-  // Reset game
   const resetGame = () => {
     setCurrentNumber(0);
     setGameStatus('ready');
@@ -153,7 +137,6 @@ const GamePage = () => {
     setGameHistory([]);
   };
 
-  // Reset scores
   const resetScores = () => {
     setPlayerScore(0);
     setComputerScore(0);
@@ -163,13 +146,11 @@ const GamePage = () => {
   return (
     <div className="game-page">
       <div className="game-container">
-        {/* Header */}
         <header className="game-header">
           <h1 className="game-title">🎮 Race to 100</h1>
           <p className="game-subtitle">First to say 100 wins!</p>
         </header>
 
-        {/* Score Board */}
         <div className="scoreboard">
           <div className="score-item player-score">
             <div className="score-label">You</div>
@@ -182,7 +163,6 @@ const GamePage = () => {
           </div>
         </div>
 
-        {/* Difficulty Selector */}
         {gameStatus === 'ready' && (
           <div className="difficulty-selector">
             <label className="difficulty-label">Choose Difficulty:</label>
@@ -209,7 +189,6 @@ const GamePage = () => {
           </div>
         )}
 
-        {/* Current Number Display */}
         <div className="current-number-display">
           <div className="current-label">Last Number Said</div>
           <div className="current-number">{currentNumber}</div>
@@ -221,7 +200,6 @@ const GamePage = () => {
           )}
         </div>
 
-        {/* Game Status */}
         <div className={`game-status ${gameStatus}`}>
           {gameStatus === 'ready' && (
             <p>Click "Start Game" to begin!</p>
@@ -245,7 +223,6 @@ const GamePage = () => {
           )}
         </div>
 
-        {/* Number Selection Buttons */}
         {gameStatus === 'playing' && isPlayerTurn && (
           <div className="number-selection">
             <p className="selection-hint">
@@ -266,7 +243,6 @@ const GamePage = () => {
           </div>
         )}
 
-        {/* Game History */}
         {gameHistory.length > 0 && (
           <div className="game-history">
             <h3 className="history-title">📜 Game History</h3>
@@ -284,7 +260,6 @@ const GamePage = () => {
           </div>
         )}
 
-        {/* Control Buttons */}
         <div className="game-controls">
           {gameStatus === 'ready' && (
             <button className="control-btn start-btn" onClick={startGame}>
@@ -316,7 +291,6 @@ const GamePage = () => {
           )}
         </div>
 
-        {/* Rules Section */}
         {showRules && (
           <div className="rules-section">
             <h3 className="rules-title">📖 Game Rules</h3>

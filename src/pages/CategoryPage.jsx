@@ -1,23 +1,16 @@
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import TrickAccordion from '../components/TrickAccordion';
 import SearchBar from '../components/SearchBar';
 import './CategoryPage.css';
 
-// ============================================
-// PAGE: CategoryPage
-// PERFECT SEARCH: Exact number in title, exact word matching
-// ============================================
-
 const CategoryPage = ({ category, tricks, onBack }) => {
-  // State for search and accordion
   const [searchTerm, setSearchTerm] = useState('');
   const [openAccordionId, setOpenAccordionId] = useState(null);
+  
+  const { markTrickViewed } = useAuth();
 
-  // ============================================
-  // PERFECT SEARCH ALGORITHM
-  // ============================================
   const perfectSearch = (trick, search) => {
-    // If search is empty, show all tricks
     if (!search || search.trim() === '') return true;
 
     const searchLower = search.toLowerCase().trim();
@@ -26,46 +19,32 @@ const CategoryPage = ({ category, tricks, onBack }) => {
     const steps = trick.steps.join(' ').toLowerCase();
     const example = trick.example.toLowerCase();
 
-    // Check if search term is a pure number
     const isNumber = /^\d+$/.test(searchLower);
 
     if (isNumber) {
-      // ========================================
-      // NUMBER SEARCH - ONLY IN TITLE
-      // ========================================
-      // Extract numbers from title only using word boundaries
       const titleNumbers = title.match(/\b\d+\b/g) || [];
-      
-      // Check if the exact number exists in title
       return titleNumbers.includes(searchLower);
-      
     } else {
-      // ========================================
-      // WORD SEARCH - EXACT WORD IN ANY FIELD
-      // ========================================
       const allText = `${title} ${explanation} ${steps} ${example}`;
-      
-      // Split search into individual words
       const searchWords = searchLower.split(/\s+/).filter(word => word.length > 0);
       
-      // Check if ALL search words exist as complete words
       return searchWords.every(searchWord => {
-        // Use word boundary regex for exact word matching
         const wordRegex = new RegExp(`\\b${searchWord}\\w*\\b`, 'i');
         return wordRegex.test(allText);
       });
     }
   };
 
-  // Filter tricks using perfect search
   const filteredTricks = tricks.filter(trick => perfectSearch(trick, searchTerm));
 
-  // Toggle accordion open/close
   const handleAccordionToggle = (id) => {
     setOpenAccordionId(openAccordionId === id ? null : id);
+    
+    if (openAccordionId !== id) {
+      markTrickViewed(id, category);
+    }
   };
 
-  // Get category display name
   const getCategoryTitle = () => {
     return category.charAt(0).toUpperCase() + category.slice(1);
   };
